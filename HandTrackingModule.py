@@ -40,46 +40,6 @@ class handDetector():
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 lmList.append([id, cx, cy])
                 if draw:
-                    cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+                    cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
         
         return lmList
-
-
-def main():
-    pTime = 0   # Previous time
-    cTime = 0   # Current time
-    cap = cv2.VideoCapture(0)
-
-    detector = handDetector()
-
-    while True:
-        success, img = cap.read()
-        if not success:
-            break  # Exit if the frame is not captured successfully
-
-        img = detector.findHands(img)
-        lmList = detector.finPosition(img)
-        if len(lmList) != 0:
-            print(lmList[4])
-
-        cTime = time.time()
-        fps = 1 / (cTime - pTime)
-        pTime = cTime
-
-        cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
-
-        cv2.imshow("Image", img)
-
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q') or key == 27:
-            break  # Exit if 'q' or 'Esc' is pressed
-
-        if cv2.getWindowProperty("Image", cv2.WND_PROP_VISIBLE) < 1:
-            break # Exit if the window is closed
-
-    cap.release()
-    cv2.destroyAllWindows()  # Close all OpenCV windows
-
-
-if __name__ == "__main__":
-    main()

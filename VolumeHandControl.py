@@ -36,6 +36,9 @@ volPer = 0
 area = 0
 colorVol = (255, 0, 0)
 
+wasFist = False
+isMuted = volume.GetMute()
+
 while True:
     success, img = cap.read()
     if not success:
@@ -77,6 +80,18 @@ while True:
                 colorVol = (0, 255, 0)
             else:
                 colorVol = (255, 0, 0)
+
+            # Check if the volume should be muted
+            if detector.isFist():
+                if not wasFist:
+                    isMuted = not isMuted
+                    volume.SetMute(isMuted, None)
+                    wasFist =  True
+            else:
+                wasFist = False
+            
+    audio_status = 'Audio Muted' if isMuted else 'Audio Unmuted'
+    cv2.putText(img, audio_status, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
     # Drawings
     cv2.rectangle(img, (50, 150), (85, 400), (255, 0, 0), 3)

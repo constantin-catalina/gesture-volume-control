@@ -88,3 +88,9 @@ class handDetector():
         length = math.hypot(x2 - x1, y2 - y1)
 
         return length, img, [x1, y1, x2, y2, cx, cy]
+    
+    def isFist(self):
+        if not hasattr(self, 'lmList') or len(self.lmList) == 0:
+            return False
+        fingers =  self.fingersUp()
+        return fingers == [0, 0, 0, 0, 0]
